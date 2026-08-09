@@ -1,0 +1,263 @@
+{
+ "builtAt": "2026-08-09T12:06:06.974Z",
+ "seasons": [
+  {
+   "year": 2026,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2025,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motoe",
+     "name": "MotoE"
+    }
+   ]
+  },
+  {
+   "year": 2024,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motoe",
+     "name": "MotoE"
+    }
+   ]
+  },
+  {
+   "year": 2023,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motoe",
+     "name": "MotoE"
+    }
+   ]
+  },
+  {
+   "year": 2022,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motoe",
+     "name": "MotoE"
+    }
+   ]
+  },
+  {
+   "year": 2021,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motoe",
+     "name": "MotoE"
+    }
+   ]
+  },
+  {
+   "year": 2020,
+   "classes": [
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    },
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    }
+   ]
+  },
+  {
+   "year": 2019,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2018,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2017,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2016,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2015,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2014,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  },
+  {
+   "year": 2013,
+   "classes": [
+    {
+     "id": "motogp",
+     "name": "MotoGP"
+    },
+    {
+     "id": "moto2",
+     "name": "Moto2"
+    },
+    {
+     "id": "moto3",
+     "name": "Moto3"
+    }
+   ]
+  }
+ ]
+}

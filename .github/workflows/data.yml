@@ -1,0 +1,40 @@
+# Пересборка данных текущего сезона. Страница статическая, данные лежат
+# в репозитории (см. build.js), поэтому после каждого этапа их надо обновлять —
+# этим и занимается этот воркфлоу.
+#
+# Понедельник — потому что гоночный уикенд заканчивается в воскресенье.
+name: данные
+
+on:
+  schedule:
+    - cron: '20 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      # Без аргументов пересобирается текущий сезон и досыпаются недостающие.
+      # У Dorna лимит запросов, сборка сама держит паузы и идёт минуты.
+      - run: node build.js
+
+      - name: закоммитить, если что-то изменилось
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add data
+          git diff --cached --quiet && echo 'изменений нет' && exit 0
+          git commit -m 'данные: обновление квалификаций'
+          git push

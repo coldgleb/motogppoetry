@@ -2,7 +2,7 @@
 // по гоночной системе MotoGP. Данные из API MotoGP (motogp.js, тот же кэш, что
 // и у вкладки напарников), расчёт — в qualifying.js; здесь только DOM и события.
 
-import { fetchSeasonQualifying, fetchCategories, SEASONS } from './motogp.js';
+import { fetchSeasonQualifying, fetchCategories, fetchSeasons } from './motogp.js';
 import { buildStandings } from './qualifying.js';
 import { teamColor } from './teams.js';
 
@@ -74,13 +74,11 @@ async function load() {
   try {
     setStatus('Загружаю квалификации сезона…');
     render();
-    // Этапы приходят пачками в порядке календаря — зачёт растёт на глазах.
     const rounds = await fetchSeasonQualifying(
       Number(els.season.value), els.cls.value, (m) => mine() && setStatus(m),
-      (r) => { if (mine()) { state.rounds.push(r); render(); } },
     );
     if (!mine()) return;
-    state.rounds = rounds; // кэш-хит: onRound не звали — отрисуем всё разом
+    state.rounds = rounds;
     if (!rounds.length) throw new Error('В этом сезоне ещё нет квалификаций');
     setStatus('');
   } catch (e) {
@@ -101,7 +99,6 @@ async function loadClasses() {
   render();
   els.cls.disabled = true;
   try {
-    setStatus('Загружаю классы сезона…');
     const cats = await fetchCategories(Number(els.season.value));
     els.cls.innerHTML = cats.map((c) => `<option value="${c.id}">${c.name}</option>`).join('');
     els.cls.disabled = !cats.length;
@@ -113,13 +110,25 @@ async function loadClasses() {
   }
 }
 
-// Классы досыпаются при открытии вкладки: на старте хватает одной вкладки,
-// а список классов на сезон один и тот же — второй запрос уйдёт в кэш.
-export function onReveal() {
-  if (!els.cls.options.length) loadClasses();
+// Список сезонов приходит из указателя собранных данных (data/index.json).
+async function init() {
+  try {
+    setStatus('Загружаю список сезонов…');
+    const seasons = await fetchSeasons();
+    els.season.innerHTML = seasons.map((y) => `<option>${y}</option>`).join('');
+    setStatus('');
+    await loadClasses();
+  } catch (e) {
+    setStatus(`${e.message}. Обнови страницу.`, true);
+  }
 }
 
-els.season.innerHTML = SEASONS.map((y) => `<option>${y}</option>`).join('');
+// Наполняется при открытии вкладки: на старте хватает одной, а данные общие —
+// второй заход уйдёт в кэш.
+export function onReveal() {
+  if (!els.season.options.length) init();
+}
+
 els.load.addEventListener('click', load);
 els.season.addEventListener('change', loadClasses);
 els.cls.addEventListener('change', () => {

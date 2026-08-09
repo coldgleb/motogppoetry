@@ -2,7 +2,7 @@
 // таблица гэпа между напарниками по каждому этапу. Данные из API MotoGP
 // (motogp.js), расчёт — в qualifying.js; здесь только DOM и события.
 
-import { fetchSeasonQualifying, fetchCategories, teamsFromRounds, SEASONS } from './motogp.js';
+import { fetchSeasonQualifying, fetchCategories, fetchSeasons, teamsFromRounds } from './motogp.js';
 import { buildComparison, formatLapTime, AUTO_OFF_PCT } from './qualifying.js';
 import { teamColor, onColor } from './teams.js';
 
@@ -233,9 +233,8 @@ function reset() {
 
 // Номер текущей загрузки. Сезон грузится сам, поэтому запусков может
 // оказаться несколько сразу: перещёлкнул сезон стрелками — и предыдущая
-// загрузка всё ещё идёт. Её этапы досыпались бы в state.rounds уже нового
-// сезона и смешали бы два календаря, поэтому всё, что приходит с устаревшим
-// номером, молча выбрасываем.
+// загрузка всё ещё идёт. Её ответ лёг бы поверх уже нового сезона, поэтому
+// всё, что приходит с устаревшим номером, молча выбрасываем.
 let gen = 0;
 
 async function load() {
@@ -243,23 +242,16 @@ async function load() {
   const my = ++gen;
   const mine = () => my === gen;
   els.load.disabled = true;
-  state.rounds = []; // растёт по мере прихода этапов
+  state.rounds = [];
   state.pairKey = null; // активная пара выберется сама (начинавшая сезон)
   state.loading = true;
   try {
-    setStatus('Загружаю квалификации сезона…');
-    render(); // каркас с «Загружаю…», дальше наполняется этап за этапом
-    const onRound = (r) => {
-      if (!mine()) return;
-      state.rounds.push(r);
-      syncTeams();
-      render();
-    };
+    render(); // каркас с «Загружаю…»
     const rounds = await fetchSeasonQualifying(
-      Number(els.season.value), els.cls.value, (m) => mine() && setStatus(m), onRound,
+      Number(els.season.value), els.cls.value, (m) => mine() && setStatus(m),
     );
     if (!mine()) return;
-    state.rounds = rounds; // кэш-хит: onRound не звали — отрисуем всё разом
+    state.rounds = rounds;
     if (!rounds.length) throw new Error('В этом сезоне ещё нет квалификаций');
     syncTeams();
     setStatus('');
@@ -274,17 +266,16 @@ async function load() {
   }
 }
 
-// Классы нужны сразу, поэтому тянем их при старте (см. низ модуля). Открытие
-// вкладки лишь досыпает их, если стартовый запрос не удался.
+// Вкладка наполняется при старте (см. низ модуля). Открытие лишь досыпает
+// список, если стартовый запрос не удался.
 export function onReveal() {
-  if (!els.cls.options.length) loadClasses();
+  if (!els.season.options.length) init();
 }
 
 async function loadClasses() {
   reset();
   els.cls.disabled = true;
   try {
-    setStatus('Загружаю классы сезона…');
     const cats = await fetchCategories(Number(els.season.value));
     els.cls.innerHTML = cats.map((c) => `<option value="${c.id}">${c.name}</option>`).join('');
     els.cls.disabled = !cats.length;
@@ -299,9 +290,22 @@ async function loadClasses() {
   }
 }
 
+// Список сезонов приходит из указателя собранных данных, а не из календаря
+// Dorna: показывать сезон, которого нет в data/, нечестно.
+async function init() {
+  try {
+    setStatus('Загружаю список сезонов…');
+    const seasons = await fetchSeasons();
+    els.season.innerHTML = seasons.map((y) => `<option>${y}</option>`).join('');
+    setStatus('');
+    await loadClasses();
+  } catch (e) {
+    setStatus(`${e.message}. Обнови страницу.`, true);
+  }
+}
+
 // --- события ---------------------------------------------------------------
 
-els.season.innerHTML = SEASONS.map((y) => `<option>${y}</option>`).join('');
 els.gapUnit.innerHTML = Object.entries(GAP_UNITS)
   .map(([k, u]) => `<option value="${k}">${u.label}</option>`)
   .join('');
@@ -357,5 +361,5 @@ els.table.addEventListener('click', (e) => {
   render();
 });
 
-// Классы — сразу при старте, чтобы список был готов ещё до открытия вкладки.
-loadClasses();
+// Сезоны и классы — сразу при старте, чтобы списки были готовы до открытия вкладки.
+init();
