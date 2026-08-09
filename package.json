@@ -1,0 +1,11 @@
+{
+  "name": "motogppoetry",
+  "version": "0.1.0",
+  "description": "Квалификации MotoGP: гэп между напарниками и зачёт по местам в квале",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node src/qualifying.test.js"
+  },
+  "license": "MIT"
+}
